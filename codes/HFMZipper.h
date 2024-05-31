@@ -7,7 +7,7 @@
 
 typedef bool HMFopreator;
 const int _1MB = 1024 * 1024;
-const int _dict = 4 * _1MB;	//×Öµä´óĞ¡4MB
+const int _dict = 4 * _1MB;	//å­—å…¸å¤§å°4MB
 
 namespace hfm{
 	const HMFopreator compress = 1;
@@ -16,8 +16,8 @@ namespace hfm{
 
 
 struct fileHead {
-	char fileIdentity[4] = "hFM";	//ÎÄ¼şÍ·±êÖ¾
-	unsigned int byteFrequency[256]{ 0 };	//´æ·ÅÆµÂÊ
+	char fileIdentity[4] = "hFM";	//æ–‡ä»¶å¤´æ ‡å¿—
+	unsigned int byteFrequency[256]{ 0 };	//å­˜æ”¾é¢‘ç‡
 };
 
 
@@ -27,25 +27,25 @@ class HFMZipper {
 	size_t file_sz;
 	fileHead head{ 0 };
 	HFMTree* hfmtree;
-	std::unordered_map<unsigned char, std::string> map;//×Ö½ÚÂëµ½hfm±àÂëµÄÓ³Éä
-	std::unordered_map<std::string, unsigned char> map_re;//hfm±àÂëµ½×Ö½ÚÂëµÄÓ³Éä
+	std::unordered_map<unsigned char, std::string> map;//å­—èŠ‚ç åˆ°hfmç¼–ç çš„æ˜ å°„
+	std::unordered_map<std::string, unsigned char> map_re;//hfmç¼–ç åˆ°å­—èŠ‚ç çš„æ˜ å°„
 
 	size_t getSize();
-	size_t getSizeFromTree();	//Ê÷µÄ¸ù½Úµã¼´ÊÇÔ­Ê¼ÎÄ¼ş´óĞ¡
-	void calculateFrequency();	//¶ÁÈ¡ÎÄ¼ş¼ÆËã¸÷×Ö½ÚÂëÆµÂÊ
-	void readFrequency();		//Ö±½Ó¶ÁÈ¡ÎÄ¼şÍ·µÃµ½ÆµÂÊ
-	void createHuffmanTree();	//¸ù¾İÎÄ¼şÍ·ÖĞbyteFrequencyÉú³ÉHuffmanÊ÷
-	void getMap();				//¸ù¾İHuffmanÊ÷Éú³É×Ö½ÚÂëµ½hfm±àÂëµÄÓ³Éämap
-	void getMap_reverse();		//¸ù¾İHuffmanÊ÷Éú³Éhfm±àÂëµ½×Ö½ÚÂëµÄÓ³Éämap_re
+	size_t getSizeFromTree();	//æ ‘çš„æ ¹èŠ‚ç‚¹å³æ˜¯åŸå§‹æ–‡ä»¶å¤§å°
+	void calculateFrequency();	//è¯»å–æ–‡ä»¶è®¡ç®—å„å­—èŠ‚ç é¢‘ç‡
+	void readFrequency();		//ç›´æ¥è¯»å–æ–‡ä»¶å¤´å¾—åˆ°é¢‘ç‡
+	void createHuffmanTree();	//æ ¹æ®æ–‡ä»¶å¤´ä¸­byteFrequencyç”ŸæˆHuffmanæ ‘
+	void getMap();				//æ ¹æ®Huffmanæ ‘ç”Ÿæˆå­—èŠ‚ç åˆ°hfmç¼–ç çš„æ˜ å°„map
+	void getMap_reverse();		//æ ¹æ®Huffmanæ ‘ç”Ÿæˆhfmç¼–ç åˆ°å­—èŠ‚ç çš„æ˜ å°„map_re
 
 public:
 	HFMZipper(std::string& path, HMFopreator op = hfm::compress);
 	~HFMZipper();
 	bool doCompress();
 	bool doUncompress();
-	HFMTree* const getHFMTree() const;	//·µ»Ø³ÉÔ±huffman
-	void showMap() const;				//Êä³ömap
-	void showMap_reverse() const;		//Êä³ömap_re
-	void showHead() const;				//Êä³öÎÄ¼şÍ·ÖĞµÄÆµÂÊ
+	const HFMTree* getHFMTree() const;	//è¿”å›æˆå‘˜huffman
+	void showMap() const;				//è¾“å‡ºmap
+	void showMap_reverse() const;		//è¾“å‡ºmap_re
+	void showHead() const;				//è¾“å‡ºæ–‡ä»¶å¤´ä¸­çš„é¢‘ç‡
 
 };
