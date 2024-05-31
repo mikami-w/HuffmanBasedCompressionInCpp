@@ -2,19 +2,19 @@
 
 HFMTree::HFMTree(int nodecount, unsigned int* pweight) :m_length(nodecount)
 {
-	int iMaxNodeCount = 2 * m_length - 1; //HuffmanÊ÷µÄ½Úµã×ÜÊıÊÇ2n-1£¨n´ú±íHuffmanÊ÷µÄÒ¶×Ó½ÚµãÊıÁ¿£©
-	m_data = new HFMTreeNode[iMaxNodeCount];	//½Úµã×ÜÊı¹Ì¶¨£¬ËùÒÔÊ¹ÓÃÊı×é×÷ÎªÄÚ´æ³Ø´æ´¢
+	int iMaxNodeCount = 2 * m_length - 1; //Huffmanæ ‘çš„èŠ‚ç‚¹æ€»æ•°æ˜¯2n-1ï¼ˆnä»£è¡¨Huffmanæ ‘çš„å¶å­èŠ‚ç‚¹æ•°é‡ï¼‰
+	m_data = new HFMTreeNode[iMaxNodeCount];	//èŠ‚ç‚¹æ€»æ•°å›ºå®šï¼Œæ‰€ä»¥ä½¿ç”¨æ•°ç»„ä½œä¸ºå†…å­˜æ± å­˜å‚¨
 
 	for (int i = 0; i < iMaxNodeCount; ++i)
 	{
-		//ËùÓĞ½ÚµãË÷ÒıÊı¾İ³õÊ¼»¯Îª-1£¬±íÊ¾Î´±»Ê¹ÓÃ
+		//æ‰€æœ‰èŠ‚ç‚¹ç´¢å¼•æ•°æ®åˆå§‹åŒ–ä¸º-1ï¼Œè¡¨ç¤ºæœªè¢«ä½¿ç”¨
 		m_data[i].parent = -1;
 		m_data[i].lchild = -1;
 		m_data[i].rchild = -1;
 	}
 	for (int i = 0; i < m_length; ++i)
 	{
-		//ÄÚ´æ³Ø¿ªÍ·´æ·Å³õÊ¼½Úµã
+		//å†…å­˜æ± å¼€å¤´å­˜æ”¾åˆå§‹èŠ‚ç‚¹
 		m_data[i].weight = pweight[i];
 	}
 
@@ -35,22 +35,22 @@ HFMTree::~HFMTree()
 
 void HFMTree::_create()
 {
-	int idx1 = 0;	//×îĞ¡¸ùÈ¨Ë÷Òı
-	int idx2 = 0;	//×îĞ¡¸ùÈ¨Ë÷Òı£¬¸ùÈ¨´óÓÚidx1
+	int idx1 = 0;	//æœ€å°æ ¹æƒç´¢å¼•
+	int idx2 = 0;	//æœ€å°æ ¹æƒç´¢å¼•ï¼Œæ ¹æƒå¤§äºidx1
 
-	int iMaxNodeCount = 2 * m_length - 1; //½Úµã×ÜÊı
-	int initlength = m_length;	//³õÊ¼½ÚµãÊı£¬×÷Ë÷ÒıÎªËùÓĞ³õÊ¼½ÚµãµÄÏÂÒ»¸öË÷Òı
+	int iMaxNodeCount = 2 * m_length - 1; //èŠ‚ç‚¹æ€»æ•°
+	int initlength = m_length;	//åˆå§‹èŠ‚ç‚¹æ•°ï¼Œä½œç´¢å¼•ä¸ºæ‰€æœ‰åˆå§‹èŠ‚ç‚¹çš„ä¸‹ä¸€ä¸ªç´¢å¼•
 	for (int i = initlength; i < iMaxNodeCount; ++i)
 	{
 		SelectTwoMinValue(idx1, idx2);
-		m_data[i].weight = m_data[idx1].weight + m_data[idx2].weight; //ĞÂ½ÚµãµÄÈ¨ÖµµÈÓÚ×óÓÒº¢×ÓÖ®ºÍ
+		m_data[i].weight = m_data[idx1].weight + m_data[idx2].weight; //æ–°èŠ‚ç‚¹çš„æƒå€¼ç­‰äºå·¦å³å­©å­ä¹‹å’Œ
 		m_data[i].lchild = idx1;
 		m_data[i].rchild = idx2;
 
 		m_data[idx1].parent = i;
 		m_data[idx2].parent = i;
 
-		m_length++; //µ±Ç°½ÚµãÊı
+		m_length++; //å½“å‰èŠ‚ç‚¹æ•°
 	}
 }
 
@@ -59,28 +59,28 @@ void HFMTree::SelectTwoMinValue(int& rtnIdx1, int& rtnIdx2)
 	int minval1 = INT_MAX;
 	int minval2 = INT_MAX;
 
-	//ÕÒ×îĞ¡Öµ
+	//æ‰¾æœ€å°å€¼
 	for (int i = 0; i < m_length; ++i)
 	{
-		if (m_data[i].parent == -1) //¸¸±ê¼ÇÎ´±»Ê¹ÓÃ ¼´µ±Ç°½ÚµãÎªÊ÷¸ù
+		if (m_data[i].parent == -1) //çˆ¶æ ‡è®°æœªè¢«ä½¿ç”¨ å³å½“å‰èŠ‚ç‚¹ä¸ºæ ‘æ ¹
 		{
 			if (minval1 > m_data[i].weight)
 			{
-				minval1 = m_data[i].weight; //¼ÇÂ¼×îĞ¡Öµ
-				rtnIdx1 = i; //¼ÇÂ¼ÏÂ±ê
+				minval1 = m_data[i].weight; //è®°å½•æœ€å°å€¼
+				rtnIdx1 = i; //è®°å½•ä¸‹æ ‡
 			}
 		}
 	}
 
-	//ÕÒµÚ¶ş¸ö×îĞ¡µÄÖµ
+	//æ‰¾ç¬¬äºŒä¸ªæœ€å°çš„å€¼
 	for (int i = 0; i < m_length; ++i)
 	{
-		if (m_data[i].parent == -1 && i != rtnIdx1) //°ÑµÚÒ»¸öÕÒµ½µÄ×îĞ¡È¨ÖµµÄ½ÚµãÅÅ³ı
+		if (m_data[i].parent == -1 && i != rtnIdx1) //æŠŠç¬¬ä¸€ä¸ªæ‰¾åˆ°çš„æœ€å°æƒå€¼çš„èŠ‚ç‚¹æ’é™¤
 		{
 			if (minval2 > m_data[i].weight)
 			{
-				minval2 = m_data[i].weight; //¼ÇÂ¼×îĞ¡Öµ
-				rtnIdx2 = i; //¼ÇÂ¼ÏÂ±ê
+				minval2 = m_data[i].weight; //è®°å½•æœ€å°å€¼
+				rtnIdx2 = i; //è®°å½•ä¸‹æ ‡
 			}
 		}
 	}
@@ -93,26 +93,26 @@ int HFMTree::GetLength()
 
 bool HFMTree::CreateHFMCode(std::string& result, int idx)
 {
-	int leafNodeCount = (m_length + 1) / 2;	//Ò¶×ÓÊıÁ¿
+	int leafNodeCount = (m_length + 1) / 2;	//å¶å­æ•°é‡
 
 	if (idx < 0 || idx >= leafNodeCount)
 	{
-		//Ö»ÔÊĞí¶ÔÒ¶×Ó½ÚµãÇóHuffman±àÂë
+		//åªå…è®¸å¯¹å¶å­èŠ‚ç‚¹æ±‚Huffmanç¼–ç 
 		return false;
 	}
-	result = ""; //±£´æ×îÖÕÉú³ÉµÄHuffman±àÂë
+	result = ""; //ä¿å­˜æœ€ç»ˆç”Ÿæˆçš„Huffmanç¼–ç 
 	int curridx = idx;
 	int tmpparent = m_data[curridx].parent;
-	while (tmpparent != -1) //ÑØ×ÅÒ¶×ÓÏòÉÏ»ØËİ
+	while (tmpparent != -1) //æ²¿ç€å¶å­å‘ä¸Šå›æº¯
 	{
 		if (m_data[tmpparent].lchild == curridx)
 		{
-			//Èôµ±Ç°½ÚµãÎª×óº¢×ÓÔòÇ°²å0
+			//è‹¥å½“å‰èŠ‚ç‚¹ä¸ºå·¦å­©å­åˆ™å‰æ’0
 			result = "0" + result;
 		}
 		else
 		{
-			//·ñÔòµ±Ç°½ÚµãÎªÓÒº¢×Ó Ç°²å1
+			//å¦åˆ™å½“å‰èŠ‚ç‚¹ä¸ºå³å­©å­ å‰æ’1
 			result = "1" + result;
 		}
 		curridx = tmpparent;
@@ -121,7 +121,7 @@ bool HFMTree::CreateHFMCode(std::string& result, int idx)
 	return true;
 }
 
-HFMTreeNode* const HFMTree::getData() const
+const HFMTreeNode* HFMTree::getData() const
 {
 	return m_data;
 }
@@ -131,7 +131,7 @@ int HFMTree::getRoot() const
 	int root = 0;
 	while (m_data[root].parent != -1) {
 		root = m_data[root].parent;
-	}//ÏòÉÏÑ°ÕÒroot
+	}//å‘ä¸Šå¯»æ‰¾root
 
 	return root;
 }
