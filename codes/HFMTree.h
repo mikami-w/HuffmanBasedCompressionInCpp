@@ -4,31 +4,31 @@
 #include<iostream>
 
 typedef struct HFMTreeNode {
-	int weight;	//È¨Öµ
-	int parent; //¸¸Ç×£¨Êı×éÏÂ±êÖµ£©
-	int lchild; //×óº¢×Ó
-	int rchild; //ÓÒº¢×Ó
+	int weight;	//æƒå€¼
+	int parent; //çˆ¶äº²ï¼ˆæ•°ç»„ä¸‹æ ‡å€¼ï¼‰
+	int lchild; //å·¦å­©å­
+	int rchild; //å³å­©å­
 }node;
 
 class HFMTree {
 
-	HFMTreeNode* m_data;	//Ö¸ÏòÄÚ´æ³ØÊ×µØÖ·
-	int m_length;	//Ê¹ÓÃ½Úµã¸öÊı
-	void _create();	//´´½¨HuffmanÊ÷
-	void SelectTwoMinValue(int& rtnIdx1, int& rtnIdx2);	//ÕÒµ½¸ùÈ¨ÖØ×îĞ¡µÄÁ½¸ö½ÚµãË÷Òı
+	HFMTreeNode* m_data;	//æŒ‡å‘å†…å­˜æ± é¦–åœ°å€
+	int m_length;	//ä½¿ç”¨èŠ‚ç‚¹ä¸ªæ•°
+	void _create();	//åˆ›å»ºHuffmanæ ‘
+	void SelectTwoMinValue(int& rtnIdx1, int& rtnIdx2);	//æ‰¾åˆ°æ ¹æƒé‡æœ€å°çš„ä¸¤ä¸ªèŠ‚ç‚¹ç´¢å¼•
 	void _preOrder(int idx) const;
 
 public:
 	HFMTree(int nodecount, unsigned int* pweight);
 	HFMTree(const HFMTree& tree);
 	~HFMTree();
-	int GetLength();	//»ñÈ¡Ê÷ÖĞ½ÚµãÊıÁ¿
-	bool CreateHFMCode(std::string& result, int idx);	//Éú³Éµ±Ç°ÄÚ´æ³ØÖĞidxÎ»ÖÃ½ÚµãµÄHFM±àÂë,±£´æÔÚresultÖĞ
-	HFMTreeNode* const getData() const;	//·µ»ØÄÚ´æ³ØÊ×µØÖ·³£Á¿m_data
-	int getRoot() const;	//·µ»ØrootÔÚÄÚ´æ³ØÖĞË÷Òı
-	int getLeftChild(int idx);	//·µ»ØidxµÄ×óº¢×ÓË÷Òı
+	int GetLength();	//è·å–æ ‘ä¸­èŠ‚ç‚¹æ•°é‡
+	bool CreateHFMCode(std::string& result, int idx);	//ç”Ÿæˆå½“å‰å†…å­˜æ± ä¸­idxä½ç½®èŠ‚ç‚¹çš„HFMç¼–ç ,ä¿å­˜åœ¨resultä¸­
+	const HFMTreeNode* getData() const;	//è¿”å›å†…å­˜æ± é¦–åœ°å€å¸¸æŒ‡é’ˆm_data
+	int getRoot() const;	//è¿”å›rootåœ¨å†…å­˜æ± ä¸­ç´¢å¼•
+	int getLeftChild(int idx);	//è¿”å›idxçš„å·¦å­©å­ç´¢å¼•
 	int getRightChild(int idx);
-	void preOrder() const;	//Ç°Ğò±éÀú
+	void preOrder() const;	//å‰åºéå†
 	const HFMTreeNode& operator[](int idx) const;
 
 };
