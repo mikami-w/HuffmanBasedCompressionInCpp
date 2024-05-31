@@ -4,7 +4,7 @@ using namespace std;
 HFMZipper::HFMZipper(string& _path, HMFopreator op) :path(_path)
 {
 	if(op) {
-		getSize();	//»ñÈ¡ÎÄ¼ş´óĞ¡
+		getSize();	//è·å–æ–‡ä»¶å¤§å°
 		calculateFrequency();
 		createHuffmanTree();
 		getMap();
@@ -23,7 +23,7 @@ HFMZipper::~HFMZipper()
 }
 
 size_t HFMZipper::getSize()
-{//»ñÈ¡ÎÄ¼ş´óĞ¡
+{//è·å–æ–‡ä»¶å¤§å°
 	ifstream fin(path, ios::binary | ios::in);
 	unsigned long long l, m;
 	l = fin.tellg();
@@ -49,15 +49,15 @@ void HFMZipper::calculateFrequency()
 		return;
 	}
 
-	unsigned char* dict = new unsigned char[_dict];	//×Öµä£¬Ò»´Î´¦ÀíµÄÊı¾İÁ¿
+	unsigned char* dict = new unsigned char[_dict];	//å­—å…¸ï¼Œä¸€æ¬¡å¤„ç†çš„æ•°æ®é‡
 	int buffer_size = 0;
 	string HMFcode = "";
 	do {
 		memset(dict, 0, _dict);
 		fin.read((char*)dict, _dict * sizeof(unsigned char));
-		buffer_size = fin.gcount();	//³É¹¦¶ÁÈ¡µÄ×Ö½ÚÊı
+		buffer_size = fin.gcount();	//æˆåŠŸè¯»å–çš„å­—èŠ‚æ•°
 
-		//°´ÕÕ×Ö½ÚÍ³¼ÆÎÄ¼ş±àÂë³öÏÖ´ÎÊı×÷ÎªÆµÂÊ
+		//æŒ‰ç…§å­—èŠ‚ç»Ÿè®¡æ–‡ä»¶ç¼–ç å‡ºç°æ¬¡æ•°ä½œä¸ºé¢‘ç‡
 		for (int i = 0; i < buffer_size; ++i) {
 			++(head.byteFrequency[dict[i]]);
 		}
@@ -88,7 +88,7 @@ void HFMZipper::getMap()
 {
 	string HMFcode = "";
 
-	//½¨Á¢×Ö½ÚÂëµ½HMFCodeµÄÓ³Éä
+	//å»ºç«‹å­—èŠ‚ç åˆ°HMFCodeçš„æ˜ å°„
 	for (int i = 0; i < 256; ++i) {
 		hfmtree->CreateHFMCode(HMFcode, i);
 		map[i] = HMFcode;
@@ -99,7 +99,7 @@ void HFMZipper::getMap_reverse()
 {
 	string HMFcode = "";
 
-	//½¨Á¢×Ö½ÚÂëµ½HMFCodeµÄÓ³Éä
+	//å»ºç«‹å­—èŠ‚ç åˆ°HMFCodeçš„æ˜ å°„
 	for (int i = 0; i < 256; ++i) {
 		hfmtree->CreateHFMCode(HMFcode, i);
 		map_re[HMFcode] = i;
@@ -119,49 +119,49 @@ bool HFMZipper::doCompress()
 		return false;
 	}
 
-	unsigned char* dict = new unsigned char[_dict];	//×Öµä£¬Ò»´Î´¦ÀíµÄÊı¾İÁ¿
+	unsigned char* dict = new unsigned char[_dict];	//å­—å…¸ï¼Œä¸€æ¬¡å¤„ç†çš„æ•°æ®é‡
 	int buffer_size = 0;
-	unsigned char ch = 0;	//¼ÇÂ¼°´Î»»òºóµÄ×Ö·û
-	unsigned char bitcount = 0;		//¼ÇÂ¼°´Î»»òµÄ±ÈÌØÎ»³¤¶È
+	unsigned char ch = 0;	//è®°å½•æŒ‰ä½æˆ–åçš„å­—ç¬¦
+	unsigned char bitcount = 0;		//è®°å½•æŒ‰ä½æˆ–çš„æ¯”ç‰¹ä½é•¿åº¦
 
-	//½«×Ö½ÚÆµÂÊĞ´ÈëÎÄ¼şÍ·£¬ÒÔ±ã½âÑ¹
+	//å°†å­—èŠ‚é¢‘ç‡å†™å…¥æ–‡ä»¶å¤´ï¼Œä»¥ä¾¿è§£å‹
 	fout.write((char*)&head, sizeof(fileHead));
 
 	fin.seekg(0, ios::beg);
 	do {
 		memset(dict, 0, _dict);
 		fin.read((char*)dict, _dict * sizeof(char));
-		buffer_size = fin.gcount();	//³É¹¦¶ÁÈ¡µÄ×Ö½ÚÊı
+		buffer_size = fin.gcount();	//æˆåŠŸè¯»å–çš„å­—èŠ‚æ•°
 
 		for (int i = 0; i < buffer_size; ++i) {
-			//±éÀúÎÄ¼şÃ¿¸ö×Ö½Ú
+			//éå†æ–‡ä»¶æ¯ä¸ªå­—èŠ‚
 			for (char strcode : map[dict[i]]) {
 				ch <<= 1;
 				if (strcode == '1') {
-					//Óë1½øĞĞ»ò²Ù×÷µÈ¼ÛÓÚ×îºóÒ»Î»±ä1
+					//ä¸1è¿›è¡Œæˆ–æ“ä½œç­‰ä»·äºæœ€åä¸€ä½å˜1
 					ch |= 1;
 				}
-				bitcount++;//Ã¿°´Î»»òÒ»´Î¾Í¶Ôbitcount++
+				bitcount++;//æ¯æŒ‰ä½æˆ–ä¸€æ¬¡å°±å¯¹bitcount++
 				if (bitcount == 8) {
-					//Ò»¸ö×Ö½Ú·ÅÂú8¸ö±ÈÌØÎ»¾ÍĞ´ÈëÎÄ¼ş²¢ÖØÖÃbitcount
-					fout.write((char*)&ch, sizeof(unsigned char));//Ğ´Èëch
-					bitcount = 0;//±ÈÌØÎ»¼ÆÊıÖÃ0
+					//ä¸€ä¸ªå­—èŠ‚æ”¾æ»¡8ä¸ªæ¯”ç‰¹ä½å°±å†™å…¥æ–‡ä»¶å¹¶é‡ç½®bitcount
+					fout.write((char*)&ch, sizeof(unsigned char));//å†™å…¥ch
+					bitcount = 0;//æ¯”ç‰¹ä½è®¡æ•°ç½®0
 				}
 			}
 		}
 	} while (!fin.eof());
 
-	//¼ì²âch·ÅÖÃµÄ±ÈÌØÎ»¸öÊı£¬Èô²»Îª0ÇÒ²»¹»8¸ö£¬ºóÃæ²¹0Ğ´ÈëÎÄ¼ş
+	//æ£€æµ‹chæ”¾ç½®çš„æ¯”ç‰¹ä½ä¸ªæ•°ï¼Œè‹¥ä¸ä¸º0ä¸”ä¸å¤Ÿ8ä¸ªï¼Œåé¢è¡¥0å†™å…¥æ–‡ä»¶
 	if (bitcount > 0 && bitcount < 8) {
 		ch <<= (8 - bitcount);
 		fout.write((char*)&ch, sizeof(unsigned char));
 	}
 	
-	////ÎªÊÊÅäÎÄ¼şÍ·ÓĞĞ§bitÎª0µÄÇé¿ö£¬¹Ì¶¨Ğ´Èë×îºóÒ»×Ö½Ú£¬ÓĞĞ§Î»ÊıÎª0~7
+	////ä¸ºé€‚é…æ–‡ä»¶å¤´æœ‰æ•ˆbitä¸º0çš„æƒ…å†µï¼Œå›ºå®šå†™å…¥æœ€åä¸€å­—èŠ‚ï¼Œæœ‰æ•ˆä½æ•°ä¸º0~7
 	//ch <<= (8 - bitcount);
 	//fout.write((char*)&ch, sizeof(unsigned char));
 
-	//½«×îºóÒ»Î»ÓĞĞ§bitÊıĞ´ÈëÎÄ¼şÍ·
+	//å°†æœ€åä¸€ä½æœ‰æ•ˆbitæ•°å†™å…¥æ–‡ä»¶å¤´
 	//fout.seekp(0, ios::beg);
 	//fout.write((char*)&bitcount, sizeof(unsigned char));
 
@@ -184,10 +184,10 @@ bool HFMZipper::doUncompress()
 		return false;
 	}
 
-	unsigned char* dict = new unsigned char[_dict];	//×Öµä£¬Ò»´Î´¦ÀíµÄÊı¾İÁ¿
+	unsigned char* dict = new unsigned char[_dict];	//å­—å…¸ï¼Œä¸€æ¬¡å¤„ç†çš„æ•°æ®é‡
 	int buffer_size = 0;
-	unsigned char ch = 0;	//¼ÇÂ¼°´Î»»òºóµÄ×Ö·û
-	unsigned char bitcount = 0;		//¼ÇÂ¼°´Î»»òµÄ±ÈÌØÎ»³¤¶È
+	unsigned char ch = 0;	//è®°å½•æŒ‰ä½æˆ–åçš„å­—ç¬¦
+	unsigned char bitcount = 0;		//è®°å½•æŒ‰ä½æˆ–çš„æ¯”ç‰¹ä½é•¿åº¦
 	int cur = hfmtree->getRoot();
 	int size_uncompressed = 0;
 
@@ -195,28 +195,28 @@ bool HFMZipper::doUncompress()
 	do {
 		memset(dict, 0, _dict);
 		fin.read((char*)dict, _dict * sizeof(char));
-		buffer_size = fin.gcount();	//³É¹¦¶ÁÈ¡µÄ×Ö½ÚÊı
+		buffer_size = fin.gcount();	//æˆåŠŸè¯»å–çš„å­—èŠ‚æ•°
 
 		for (int i = 0; i < buffer_size; ++i) {
-			//±éÀúÎÄ¼şÃ¿¸ö×Ö½Ú
+			//éå†æ–‡ä»¶æ¯ä¸ªå­—èŠ‚
 			ch = dict[i];
 			bitcount = 0;
 			while (bitcount < 8) {
-				//Èôµ±Ç°Î»Îª1Ôò·ÃÎÊÓÒº¢×Ó£¬Îª0Ôò·ÃÎÊ×óº¢×Ó
-				if (ch & 0x80)	//Óë1000 0000°´Î»Óë,µ±Ç°Î»1ÔòµÃ1£¬·ñÔòÎª0
+				//è‹¥å½“å‰ä½ä¸º1åˆ™è®¿é—®å³å­©å­ï¼Œä¸º0åˆ™è®¿é—®å·¦å­©å­
+				if (ch & 0x80)	//ä¸1000 0000æŒ‰ä½ä¸,å½“å‰ä½1åˆ™å¾—1ï¼Œå¦åˆ™ä¸º0
 					cur = hfmtree->getRightChild(cur);
 				else
 					cur = hfmtree->getLeftChild(cur);
 
 				if (hfmtree->getLeftChild(cur) == -1 && hfmtree->getRightChild(cur) == -1) {
-					//×ßµ½ÁËÒ¶×Ó½Úµã£¬Ò¶×Ó½ÚµãË÷ÒıÎª0~255
+					//èµ°åˆ°äº†å¶å­èŠ‚ç‚¹ï¼Œå¶å­èŠ‚ç‚¹ç´¢å¼•ä¸º0~255
 					fout.write(((char*)&cur), sizeof(char));
 
-					cur = hfmtree->getRoot();	//»Øµ½¸ù½Úµã
+					cur = hfmtree->getRoot();	//å›åˆ°æ ¹èŠ‚ç‚¹
 
 					size_uncompressed++;
 					if (size_uncompressed == file_sz)
-						break;	//½âÑ¹ºó´óĞ¡ÓëÔ­ÎÄ¼ş´óĞ¡ÏàÍ¬£¬ÖÕÖ¹
+						break;	//è§£å‹åå¤§å°ä¸åŸæ–‡ä»¶å¤§å°ç›¸åŒï¼Œç»ˆæ­¢
 				}
 				bitcount++;
 				ch <<= 1;
@@ -230,7 +230,7 @@ bool HFMZipper::doUncompress()
 	return true;
 }
 
-HFMTree* const HFMZipper::getHFMTree() const
+const HFMTree* HFMZipper::getHFMTree() const
 {
 	return hfmtree;
 }
