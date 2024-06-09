@@ -21,7 +21,7 @@ HFMTree::HFMTree(int nodecount, unsigned int* pweight) :m_length(nodecount)
 	_create();
 }
 
-HFMTree::HFMTree(const HFMTree& tree)
+HFMTree::HFMTree(const HFMTree& tree) :m_length(tree.m_length)
 {
 	int iMaxNodeCount = 2 * m_length - 1;
 	m_data = new HFMTreeNode[iMaxNodeCount];
